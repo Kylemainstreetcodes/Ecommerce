@@ -1,0 +1,26 @@
+<h1>Total Index</h1>
+
+<div class="Search-Bar">
+<%= form_tag("/blog_posts", method: :get) do %>
+  <input type="text" name="tag" value="<%= params[:tag]%>">
+  <input type="submit" value= "search by tag">
+</div>
+<%end%>
+
+<% if @tag_name %>
+  <p>Displaying <%= @blog_posts.length %> result(s)</p>
+    <% elsif @error_message %>
+    <p><%= @error_message %></p>
+    <% end %>
+
+
+<% @blog_posts.each do |blog_post| %>
+  <%= link_to("/blog_posts/#{blog_post.id}") do %>
+    <div class="blog-post">
+      <h2><%= blog_post.title %></h2>
+      <p><%= blog_post.content %></p>
+      <p>Comments would go inside this butt ( | )<--- here: </p>
+    </div>
+  <% end %>
+<% end %>
+

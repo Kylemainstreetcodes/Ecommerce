@@ -1,0 +1,33 @@
+<h1>Input your blog posts here!</h1>
+
+<%= form_tag("/blog_posts", method: :post) do %>
+  <label for="id_title">Title: </label>
+  <input type="text" id="id_title" name="title" placeholder="Title of Blog">
+  <select name="tag_id">
+  </select> 
+<%= label_tag(:tag_ids, "Select tag(s) for your post:") %>
+<br>
+<%= select_tag(:tag_ids, options_from_collection_for_selection(@tags, :id, :name), multiple:true, id:"select-tag")  %>
+
+  <br>
+  <label for="content">Enter Content: </label>
+  <textarea id="content" name="content" placeholder="Tell me what's on your mind?" cols="60" rows="10" style="resize: none"></textarea>
+  <br>
+  <input type="submit" value="Post!">
+<% end %>
+
+<script type="text/javascript">
+  var tagSelectOptions = document.querySelectorAll('#select-tag option')
+
+  for(var i = 0; i < tagSelectOptions.length; i++) {
+    tagSelectOptions[i].addEventListener("mousedown", function(e) {
+      e.preventDefault();
+      var option = e.target;
+      if (option.selected) {
+        option.selected = false;
+      } else {
+        option.selected = true;
+      }
+    })
+  }
+</script>
