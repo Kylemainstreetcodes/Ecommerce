@@ -1,7 +1,19 @@
 <h1>Hello</h1>
 
-<%= @blog_post.title %>
-<%= @blog_post.content %>
+<%= @new_comment.title %>
+<%= @new_comment.content %>
+<% if @new_comment.errors.any? %>
+  <div id= "error_explanation">
+    <h2><%= pluralize(@new_comment.count, "error") %> prevented this Blog Post from being saved:</h2>
+  <ul>
+      <% @new_comment.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <%end%>
+        
+  </ul>
+</div>
+<%end%>
+
 <%= link_to("Edit Blog Post" , "/blog_posts/#{@blog_post.id}/edit") %>
 
 <%= link_to("Destroy Blog Post!" , "/blog_posts/#{@blog_post.id}" , method: :delete, data: {confirm: "Are you sure?"}) %>
@@ -16,10 +28,10 @@
 <h4>Leave a Comment?</h4>
 
 <%= form_tag("/comments", method: :post) do %>
-  <input type="text" name="username" placeholder="Username">
+  <input type="text" name="username" value="<%= @new_comment.username %>"placeholder="Username">
   <!-- #<%=label_tag(:username, "Username")%> -->
   <br>
-  <!-- <textarea name="content" placeholder="Write comment"></textarea> -->
+  <textarea name="content" placeholder="Write comment"><%= @new_comment.username %></textarea>
   <%= text_area_tag(:comments, "Write comment")%>
   <input type="hidden" name="blog_post_id" value="<%= @blog_post.id%>">
   <%= submit_tag("Leave Comment")%>

@@ -17,23 +17,23 @@ class BlogPostsController < ApplicationController
     end
   end
   def show
+    
     @blog_post = BlogPost.find(params[:id])
   end
   def new
+    @blog_post = BlogPost.new
     @tags = Tag.all
   end
 
   def create
-    blog_post = BlogPost.create(title: params[:title] , content: params[:content])
-
-    params[:tag_ids].each do |tag_id|
-
-      BlogPostTag.create(
-          blog_post_id: blog_post.id, tag_id: tag_id
-        )  
+    @blog_post = BlogPost.new(title: params[:title] , content: params[:content])
+    if @blog_post.save
+      @blog_post.create_tags(params[:tag_ids]) if params[:tag_ids])
+      redirect_to("/blog_posts")
+    else
+      @tags = Tag.all
+      render 'new'
     end
-
-    redirect_to("/blog_posts")
   end
   
   def edit
@@ -42,23 +42,16 @@ class BlogPostsController < ApplicationController
 
   def update
     @blog_post = BlogPost.find(params[:id])
-    @blog_post.update(title: params[:title] , content: params[:content])
 
-    submitted_tag_ids = params[:tag_ids].map{ |tag_id| tag_id.to_i }
-
-    old_tag_ids = blog_post.tag_ids - params[:tag_ids]
-    new_tag_ids = params[:tag_ids] - blog_post.tag_ids
-
-    old_tag_ids.each do |tag_id|
-      BlogPostTag.find_by(blog_post_id: blog_post.id, tag_id: tag_id).destroy
-    end
-
-    new_tag_ids.each do |tag_id|
-      BlogPostTag.create(blog_post_id: blog_post.id, tag_id: tag_id)
-    end
+    if @blog_post.update(title: params[:title] , content: params[:content])
+      @blog_post.update_tags(params[:tag_ids]) if params[:tag_ids]
     redirect_to "/blog_posts/#{@blog_post.id}"
-    
+    else
+      @tags = Tag.all
+      render 'edit'     
+    end
   end
+
   def destroy
     @blog_post = BlogPost.find(params[:id])
     @blog_post.destroy
@@ -66,3 +59,4 @@ class BlogPostsController < ApplicationController
     redirect_to ("/blog_posts")
   end
 end
+

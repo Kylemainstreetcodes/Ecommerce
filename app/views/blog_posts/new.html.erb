@@ -1,19 +1,38 @@
 <h1>Input your blog posts here!</h1>
 
+<% if @blog_post.errors.any? %>
+  <div id= "error_explanation">
+    <h2><%= pluralize(@blog_post.errors.count, "error") %> prevented this Blog Post from being saved:</h2>
+  <ul>
+      <% @blog_post.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <%end%>
+        
+  </ul>
+</div>
+<%end%>
+
 <%= form_tag("/blog_posts", method: :post) do %>
   <label for="id_title">Title: </label>
-  <input type="text" id="id_title" name="title" placeholder="Title of Blog">
-  <select name="tag_id">
-  </select> 
+  <input type="text" id="id_title" name="title" value="<%= @blog_post.title%>" placeholder="Title of Blog">
+  <select name="tag_id"></select> 
+
 <%= label_tag(:tag_ids, "Select tag(s) for your post:") %>
+
 <br>
+
 <%= select_tag(:tag_ids, options_from_collection_for_selection(@tags, :id, :name), multiple:true, id:"select-tag")  %>
+  <%end%>
 
   <br>
+
   <label for="content">Enter Content: </label>
-  <textarea id="content" name="content" placeholder="Tell me what's on your mind?" cols="60" rows="10" style="resize: none"></textarea>
+  <textarea id="content" name="content" placeholder="Tell me what's on your mind?" cols="60" rows="10" style="resize: none"><%= @blog_post.content %></textarea>
+
   <br>
+
   <input type="submit" value="Post!">
+
 <% end %>
 
 <script type="text/javascript">

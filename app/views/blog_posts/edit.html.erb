@@ -1,5 +1,17 @@
 <h1>EDITS</h1>
 
+<% if @blog_post.errors.any? %>
+  <div id= "error_explanation">
+    <h2><%= pluralize(@blog_post.errors.count, "error") %> prevented this Blog Post from being saved:</h2>
+  <ul>
+      <% @blog_post.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <%end%>
+        
+  </ul>
+</div>
+<%end%>
+
 <%= form_tag("/blog_posts/#{@blog_post.id}", method: :put) do %>
   <label for="id_title">Enter Title: </label>
   <input type="text" id="id_title" name="title" value="<%= @blog_post.title %>">
