@@ -1,4 +1,6 @@
 class BlogPostsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+
   def index
     if params[:tag] && params[:tag].length > 2
       @tag_name = params[:tag]
@@ -17,7 +19,7 @@ class BlogPostsController < ApplicationController
     end
   end
   def show
-    
+
     @blog_post = BlogPost.find(params[:id])
   end
   def new
@@ -27,12 +29,14 @@ class BlogPostsController < ApplicationController
 
   def create
     @blog_post = BlogPost.new(title: params[:title] , content: params[:content])
+
     if @blog_post.save
-      @blog_post.create_tags(params[:tag_ids]) if params[:tag_ids])
-      redirect_to("/blog_posts")
+        @blog_post.create_tags(params[:tag_ids]) if params[:tag_ids])
+        redirect_to("/blog_posts")
     else
-      @tags = Tag.all
-      render 'new'
+        @tags = Tag.all
+        render 'new'
+      end
     end
   end
   
