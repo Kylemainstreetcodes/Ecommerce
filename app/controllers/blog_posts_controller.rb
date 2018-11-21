@@ -38,7 +38,7 @@ class BlogPostsController < ApplicationController
     @blog_post = BlogPost.new(title: params[:title] , content: params[:content], user_id: current_user.id)
 
     if @blog_post.save
-        @blog_post.create_tags(params[:tag_ids] if params[:tag_ids])
+        @blog_post.create_tags(params[:tag_ids]) if params[:tag_ids]
         redirect_to("/blog_posts/#{@blog_post.id}")
     else
         @tags = Tag.all
