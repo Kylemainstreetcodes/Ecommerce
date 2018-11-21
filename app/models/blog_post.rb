@@ -1,5 +1,6 @@
 class BlogPost < ApplicationRecord
   belongs_to :user
+  has_one_attached :cover_image
   has_many :comments, dependent: :destroy
   has_many :blog_post_tags, dependent: :destroy
   has_many :tags, through: :blog_post_tags

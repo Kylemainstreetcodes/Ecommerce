@@ -35,7 +35,7 @@ class BlogPostsController < ApplicationController
 
   def create
 
-    @blog_post = BlogPost.new(title: params[:title] , content: params[:content], user_id: current_user.id)
+    @blog_post = BlogPost.new(title: params[:title], content: params[:content], user_id: current_user.id, cover_image: params[:cover_image])
 
     if @blog_post.save
         @blog_post.create_tags(params[:tag_ids]) if params[:tag_ids]

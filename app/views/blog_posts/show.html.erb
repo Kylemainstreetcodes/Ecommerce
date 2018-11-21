@@ -1,6 +1,7 @@
 <h1>Hello</h1>
 
 <h2><%= @blog_post.title %></h2>
+<%= image_tag(@blog_post.cover_image) if @blog_post.cover_image.attached? %>
 
 <p><%= @blog_post.content %></p>
 
