@@ -1,6 +1,7 @@
 class BlogPost < ApplicationRecord
-  has_many :comments
-  has_many :blog_post_tags
+  belongs_to :user
+  has_many :comments, dependent: :destroy
+  has_many :blog_post_tags, dependent: :destroy
   has_many :tags, through: :blog_post_tags
   validates :title, presence: true, length: { minimum: 3, maximum: 25 }
   validates :content, presence: true

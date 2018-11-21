@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
-  root 'blog_posts#index
-  '
+  get '/' => 'blog_posts#index'
+  get '/blog_posts' => 'blog_posts#index'
+  
   get '/blog_posts' => 'blog_posts#index'
 
   get '/blog_posts/new' => 'blog_posts#new'

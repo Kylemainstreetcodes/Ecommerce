@@ -1,8 +1,13 @@
 <h1>Hello</h1>
 
-<%= @new_comment.title %>
-<%= @new_comment.content %>
+<h2><%= @blog_post.title %></h2>
+
+<p><%= @blog_post.content %></p>
+
+<% if user_signed_in? && current_user.id == @blog_post.user_id %>
+<%end%>
 <% if @new_comment.errors.any? %>
+
   <div id= "error_explanation">
     <h2><%= pluralize(@new_comment.count, "error") %> prevented this Blog Post from being saved:</h2>
   <ul>
@@ -22,19 +27,19 @@
 
 <% @blog_post.comments.each do |comment| %>
    <div class="comment">
-      <h5><%= comment.username %></h5>
+      <h5><%= comment.user.email %></h5>
       <p><%= comment.content %></p>
-      <%= link_to("Delete Comment", "/comments/#{comment.id}", method: :delete) %>
+      <% if user_signed_in? && current_user.id == comment.user_id %>
+        <%= link_to("Delete Comment", "/comments/#{comment.id}", method: :delete) %>
+      <%end%>
     </div>
   <%end%>
   <h4>Leave a Comment?</h4>
 
     <%= form_tag("/comments", method: :post) do %>
-      <input type="text" name="username" value="<%= @new_comment.username %>"placeholder="Username">
-  <!-- #<%=label_tag(:username, "Username")%> -->
-     <br>
-      <textarea name="content" placeholder="Write comment"><%= @new_comment.username %></textarea>
-      <%= text_area_tag(:comments, "Write comment")%>
+      <textarea name="content" placeholder="Write comment"><%= @new_comment.content %></textarea>
+      <br>
       <input type="hidden" name="blog_post_id" value="<%= @blog_post.id%>">
-      <%= submit_tag("Leave Comment")%>
-<% end %>
+      <input type="submit" value= "Leave Comment">
+    <%end%>
+  <% end %>

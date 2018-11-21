@@ -5,11 +5,11 @@ class CommentsController < ApplicationController
 
 
   def create
-    @new_comment = Comment.new(username: params[:username], content: params[:content], blog_post_id: params[:blog_post_id])
+    @new_comment = Comment.new(content: params[:content], blog_post_id: params[:blog_post_id], user_id: current_user.id)
 
 
       if @new_comment.save 
-        redirect_to "/blog_posts/#{@new_comment.blog_post_id}"
+        redirect_to("/blog_posts/#{@new_comment.blog_post_id}r/")
       else
         @blog_post = BlogPost.find(params[:blog_post_id])
         render '/blog_posts/show'
@@ -20,6 +20,6 @@ class CommentsController < ApplicationController
     blog_post_id = Comment.find(params[:id]).blog_post_id
     Comment.find(params[:id]).destroy
 
-    redirect_to "/blog_posts/#{blog_post_id}"
+    redirect_to("/blog_posts/#{blog_post_id}")
   end
 end
